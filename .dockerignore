@@ -1,0 +1,17 @@
+node_modules
+.idea
+.next
+dist
+coverage
+.git
+.gitignore
+*.md
+.env
+.env.example
+.env.*
+eslint.config.mjs
+.prettierignore
+.prettierrc
+nodemon.json
+drizzle.config.ts
+.husky
