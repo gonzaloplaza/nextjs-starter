@@ -7,8 +7,9 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.config({
     extends: ["next/core-web-vitals", "next/typescript", "prettier"],
+    plugins: ["simple-import-sort"],
     rules: {
-
+      "simple-import-sort/imports": ["error"],
     },
     ignorePatterns: ["node_modules", ".next", "pnpm-lock.yaml"],
   }),

@@ -1,6 +1,9 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import axios from "axios";
+import { useTheme } from "next-themes";
+import { useCallback, useEffect, useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,38 +14,27 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
-
-const features = [
-  {
-    title: "Latest Next.js + React Version",
-    description: "Using Nextjs 15, React 19, Eslint 9 and Prettier.",
-  },
-  {
-    title: "Shadcn ui components",
-    description: "Beautifully designed components that you can copy and paste into your app.",
-  },
-  {
-    title: "Nodejs 22 environment",
-    description:
-      "Node.js® is a free, open-source, cross-platform JavaScript runtime environment that lets developers create servers, web apps, command line tools and scripts.",
-  },
-  {
-    title: "Production-ready Dockerfile",
-    description: "Deploy this application in the cloud.",
-  },
-];
+import { cn } from "@/lib/utils";
 
 type CardProps = React.ComponentProps<typeof Card>;
+type FeaturesResponse = { title: string; description: string }[];
 
-export function HelloWorldCard({ className, ...props }: CardProps) {
+export function HomeCard({ className, ...props }: CardProps) {
   const [mounted, setMounted] = useState(false);
+  const [features, setFeatures] = useState<FeaturesResponse>([]);
   const { theme, setTheme } = useTheme();
 
-  useEffect(() => {
-    setMounted(true);
+  const getFeatures = useCallback(async () => {
+    const uri = "/api/features";
+    const { data } = await axios<FeaturesResponse>(uri);
+
+    setFeatures(data);
   }, []);
+
+  useEffect(() => {
+    getFeatures().catch(console.error);
+    setMounted(true);
+  }, [getFeatures]);
 
   if (!mounted) {
     return null;
